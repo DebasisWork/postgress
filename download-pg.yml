@@ -1,0 +1,20 @@
+name: Save Postgres Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install skopeo
+        run: sudo apt-get update && sudo apt-get install -y skopeo
+
+      - name: Download postgres image
+        run: skopeo copy docker://postgres:15 docker-archive:postgres15.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: postgres15
+          path: postgres15.tar
